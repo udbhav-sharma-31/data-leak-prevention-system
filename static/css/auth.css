@@ -1,0 +1,79 @@
+.auth-container {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-main {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.branding-section {
+  flex: 1;
+  padding: 40px;
+  color: #00ff88;
+}
+
+.form-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background: #0d1117;
+  border-radius: 12px;
+}
+
+.form-tabs {
+  display: flex;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #aaa;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  color: #00ff88;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 2px;
+  background: #00ff88;
+  transition: 0.3s;
+}
+
+.hidden {
+  display: none;
+}
+
+.flash {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.flash.error {
+  background: rgba(255,0,0,0.2);
+}
+
+.flash.success {
+  background: rgba(0,255,136,0.2);
+}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card p-4 shadow-lg border-success bg-black">
+    <h4 class="text-success mb-3">🔐 File Encryption Module</h4>
+    <form method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="file" class="form-label text-light">Choose File to Encrypt:</label>
+        <input type="file" name="file" class="form-control form-control-dark" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="text-light">Select Encryption Algorithm:</label>
+        <select name="algorithm" class="form-select form-control-dark text-light bg-dark border-success">
+          <option value="AES">AES (Symmetric Encryption)</option>
+          <option value="RSA">RSA (Asymmetric Encryption)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100">Encrypt File</button>
+    </form>
+
+    {% if download_filename %}
+      <div class="mt-4">
+        <h5 class="text-success">✅ Encryption Complete</h5>
+        <p class="text-light">Download your encrypted file and key below:</p>
+
+        <a href="{{ url_for('static', filename=download_filename) }}"
+           class="btn btn-outline-success me-3" download>
+           ⬇️ Download Encrypted File
+        </a>
+
+        {% if key_data %}
+          <a href="data:application/octet-stream;base64,{{ key_data|b64encode }}"
+             download="{{ key_filename }}"
+             class="btn btn-outline-warning">🔑 Download {{ key_filename }}</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

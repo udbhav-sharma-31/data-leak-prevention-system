@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card p-4 shadow-lg border-warning bg-black">
+    <h4 class="text-warning mb-3">🔓 File Decryption Module</h4>
+
+    <form method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="file" class="form-label text-light">Encrypted File:</label>
+        <input type="file" name="file" class="form-control form-control-dark" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="key" class="form-label text-light">Decryption Key File:</label>
+        <input type="file" name="key" class="form-control form-control-dark" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="text-light">Select Decryption Algorithm:</label>
+        <select name="algorithm" class="form-select form-control-dark text-light bg-dark border-warning">
+          <option value="AES">AES (Symmetric Decryption)</option>
+          <option value="RSA">RSA (Asymmetric Decryption)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-warning w-100">Decrypt File</button>
+    </form>
+
+    {% if decrypted_filename %}
+      <div class="mt-4">
+        <h5 class="text-success">✅ Decryption Complete</h5>
+        <p class="text-light">Download your decrypted file below:</p>
+        <a href="{{ url_for('static', filename=decrypted_filename) }}"
+           class="btn btn-outline-success me-3" download>⬇️ Download Decrypted File</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

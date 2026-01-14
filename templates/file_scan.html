@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="card p-4 mb-4">
+        <h4 class="text-success mb-3">File Leak Scanner</h4>
+
+        <!-- Message -->
+        {% if message %}
+          <div class="alert alert-{{ message[0] }}">{{ message[1] }}</div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="mb-3">
+          <label class="form-label text-light">Upload file to scan</label>
+
+          <!-- custom file input -->
+          <div class="input-group mb-3">
+            <input type="file" name="file" class="form-control form-control-dark" id="fileInput" aria-describedby="fileHelp" required>
+            <button class="btn btn-success" type="submit">Scan</button>
+          </div>
+          <div id="fileHelp" class="form-text text-dim">Allowed: .txt, .py, .env, .json, .csv, .yaml, .yml, .md</div>
+        </form>
+
+        <!-- Scan results -->
+        {% if results is not none %}
+          <div class="mt-3">
+            <h5 class="text-success">Scan Results</h5>
+            {% if results|length == 0 %}
+              <p class="text-light">No sensitive data detected.</p>
+            {% else %}
+              <table class="table table-dark table-striped border-success">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Count</th>
+                    <th>Example(s)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in results %}
+                  <tr>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.count }}</td>
+                    <td><code>{{ item.examples|join(', ') }}</code></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card p-3 mb-3">
+        <h5 class="text-success">Recent Scan History</h5>
+        {% if history|length == 0 %}
+          <p class="text-light">No scans yet. Your recent scans will appear here.</p>
+        {% else %}
+          <ul class="list-group list-group-flush">
+            {% for h in history %}
+              <li class="list-group-item bg-black border-success mb-2">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <strong class="text-light">{{ h.filename }}</strong><br/>
+                    <small class="text-dim">{{ h.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-{{ 'danger' if h.found_count>0 else 'success' }}">{{ h.found_count }} </span>
+                    <button class="btn btn-sm btn-outline-success mt-2" data-bs-toggle="collapse" data-bs-target="#details-{{ h.id }}">Details</button>
+                  </div>
+                </div>
+
+                <div class="collapse mt-2" id="details-{{ h.id }}">
+                  {% if h.findings|length == 0 %}
+                    <div class="text-light">No findings.</div>
+                  {% else %}
+                    <ul class="mb-0">
+                      {% for f in h.findings %}
+                        <li class="text-light"><strong>{{ f.type }}</strong> — {{ f.count }} — <code>{{ f.examples|join(', ') }}</code></li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Small JS to show filename in custom input and nice focus -->
+<script>
+document.getElementById('fileInput')?.addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(file) {
+    // optionally show file name somewhere or validate type clientside
+  }
+});
+</script>
+{% endblock %}

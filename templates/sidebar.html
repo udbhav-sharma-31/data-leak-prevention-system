@@ -1,0 +1,48 @@
+<div class="col-md-3 col-lg-2 bg-black border-end border-success min-vh-100 p-3">
+  <h5 class="text-success mb-4">🧭 Navigation</h5>
+
+  <ul class="nav flex-column">
+
+    <li class="nav-item mb-2">
+      <a href="{{ url_for('file_scan') }}"
+         class="nav-link {% if request.endpoint == 'file_scan' %}active{% endif %}">
+        <i data-lucide="file-search"></i> File Scanner
+      </a>
+    </li>
+
+    <li class="nav-item mb-2">
+      <a href="{{ url_for('cloud_dashboard') }}"
+         class="nav-link {% if request.endpoint == 'cloud_dashboard' %}active{% endif %}">
+        <i data-lucide="cloud"></i> Cloud Scanner
+      </a>
+    </li>
+
+    <li class="nav-item mb-2">
+      <a href="{{ url_for('encrypt_file') }}"
+         class="nav-link {% if request.endpoint == 'encrypt_file' %}active{% endif %}">
+        <i data-lucide="lock"></i> Encrypt File
+      </a>
+    </li>
+
+    <li class="nav-item mb-2">
+      <a href="{{ url_for('decrypt_file') }}"
+         class="nav-link {% if request.endpoint == 'decrypt_file' %}active{% endif %}">
+        <i data-lucide="unlock"></i> Decrypt File
+      </a>
+    </li>
+
+    <li class="nav-item mb-2">
+      <a href="#" class="nav-link">
+        <i data-lucide="activity"></i> Audit Logs
+      </a>
+    </li>
+
+    <li class="nav-item mb-2">
+      <a href="{{ url_for('assistant') }}"
+         class="nav-link {% if request.endpoint == 'assistant' %}active{% endif %}">
+        <i data-lucide="bot"></i> AI Security Helper
+      </a>
+    </li>
+
+  </ul>
+</div>

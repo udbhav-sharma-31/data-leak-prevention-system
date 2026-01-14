@@ -1,0 +1,132 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <h2 class="mb-4 text-success">
+        <i data-lucide="cloud"></i> Cloud Data Leak Scanner
+    </h2>
+
+    <div class="row">
+
+        <!-- Cloud Scan Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-success mb-4">
+                <div class="card-body">
+
+                    <h5 class="card-title text-success">
+                        <i data-lucide="search"></i> Demo Cloud Scan
+                    </h5>
+
+                    <p class="card-text text-muted">
+                        Scan cloud-stored data for potential sensitive information leaks.
+                    </p>
+
+                    <form action="{{ url_for('cloud_scan_file') }}" method="post">
+                        <button type="submit" class="btn btn-success w-100">
+                            Run Demo Cloud Scan
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Drive Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-secondary mb-4">
+                <div class="card-body">
+
+                    <h5 class="card-title text-success">
+                        <i data-lucide="hard-drive"></i> Google Drive Scan
+                    </h5>
+
+                    <p class="card-text text-muted">
+                        Scan files stored in Google Drive (coming soon).
+                    </p>
+
+
+                    <form action="{{ url_for('gdrive_connect') }}" method="post">
+                        <button type="submit" class="btn btn-success w-100">
+                            Scan Google Drive
+                        </button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% if findings is defined %}
+<div class="card mt-4" style="
+    background: rgba(0,0,0,0.65);
+    border: 1px solid #f1c40f;
+    box-shadow: 0 0 12px rgba(241,196,15,0.3);
+">
+    <div class="card-body">
+
+        <h5 class="card-title" style="color:#f1c40f;">
+            <i data-lucide="alert-triangle"></i> Scan Results
+        </h5>
+
+        {% if total_found == 0 %}
+            <p style="color:#2ecc71; font-weight:600;">
+                ✔ No sensitive data detected
+            </p>
+        {% else %}
+            <p style="color:#e74c3c; font-weight:600;">
+                ⚠ {{ total_found }} sensitive item(s) detected
+            </p>
+
+            <ul style="color:#ecf0f1;">
+                {% for key, count in findings.items() %}
+                    <li><strong>{{ key }}</strong> : {{ count }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    </div>
+</div>
+{% endif %}
+{% if gdrive_results %}
+<div class="results-box">
+    <h3>🔍 Google Drive Scan Results</h3>
+
+    {% for item in gdrive_results %}
+    <div class="result-card">
+        <div class="result-header">
+            <span class="file-name">{{ item.filename }}</span>
+            <span class="severity high">HIGH</span>
+        </div>
+
+        <p class="total">
+            Total Sensitive Items: <strong>{{ item.total }}</strong>
+        </p>
+
+        <ul class="finding-list">
+            {% for key, val in item.findings.items() %}
+                {% if val > 0 %}
+                <li>
+                    <span class="tag">{{ key }}</span>
+                    <span class="count">{{ val }}</span>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="no-results">
+    <h3>✅ No Data Leaks Found</h3>
+    <p>Your Google Drive files are clean. No sensitive data detected.</p>
+</div>
+{% endif %}
+
+
+
+
+{% endblock %}
+

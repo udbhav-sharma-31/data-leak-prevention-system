@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-success text-center">Welcome, {{ user.username }}!</h2>
+<p class="text-light text-center">Select a module from the sidebar to begin.</p>
+
+<div class="row g-4 mt-3">
+
+  <div class="col-md-4">
+    <div class="card bg-black border-success shadow-sm p-3">
+      <h5 class="text-success">📊 Files Scanned</h5>
+      <h3 class="text-light">0</h3>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card bg-black border-success shadow-sm p-3">
+      <h5 class="text-success">⚠️ Leaks Detected</h5>
+      <h3 class="text-danger">0</h3>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card bg-black border-success shadow-sm p-3">
+      <h5 class="text-success">🧑‍💻 Last Login</h5>
+      <h3 class="text-light">Today</h3>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
