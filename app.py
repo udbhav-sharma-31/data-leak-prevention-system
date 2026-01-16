@@ -25,12 +25,20 @@ from dotenv import load_dotenv
 import openai
 import os
 from openai import OpenAI
-
+with app.app_context():
+    try:
+        db.create_all()
+        print("Tables created successfully on startup.")
+    except Exception as e:
+        print("DB creation error:", e)
 load_dotenv()
 client = OpenAI()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 # ✅ Flask app initialization
 app = Flask(__name__)
+with app.app_context():
+    from models import db
+    db.create_all()
 app.secret_key = 'supersecretkey'
 
 # ---- Register b64encode Jinja Filter ----
