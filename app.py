@@ -60,8 +60,19 @@ def b64encode_filter(data):
     return data
 
 # ---------------- ROUTES ----------------
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        user = User.query.filter_by(email=email).first()
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        else:
+            flash("Invalid email or password!", "danger")
+
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
