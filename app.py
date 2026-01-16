@@ -8,7 +8,13 @@ from datetime import datetime
 # OpenAI
 from dotenv import load_dotenv
 from openai import OpenAI
+import os
 
+# Ensure instance directory exists (Render fix)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+INSTANCE_DIR = os.path.join(BASE_DIR, "instance")
+
+os.makedirs(INSTANCE_DIR, exist_ok=True)
 load_dotenv()
 
 # ---------------- FLASK APP INIT ----------------
@@ -16,7 +22,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "fallback_secret_key")
 
 # ---------------- DATABASE CONFIG ----------------
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(INSTANCE_DIR, 'users.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # ---------------- SINGLE GLOBAL SQLALCHEMY INSTANCE ----------------
