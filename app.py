@@ -25,23 +25,21 @@ from dotenv import load_dotenv
 import openai
 import os
 from openai import OpenAI
-with app.app_context():
-    try:
-        db.create_all()
-        print("Tables created successfully on startup.")
-    except Exception as e:
-        print("DB creation error:", e)
+
 load_dotenv()
 client = OpenAI()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 # ✅ Flask app initialization
 app = Flask(__name__)
-with app.app_context():
-    from models import db
-    db.create_all()
-app.secret_key = 'supersecretkey'
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "fallback_secret")
 
-# ---- Register b64encode Jinja Filter ----
+# --- AUTO CREATE DB FOR RENDER FREE TIER ---
+with app.app_context():
+    db.create_all()
+    print("DB created at startup.")
+
+# ---- rest of your imports and routes below ----
+# ---- Register     b64encode Jinja Filter ----
 import base64
 
 @app.template_filter('b64encode')
@@ -53,7 +51,7 @@ def b64encode_filter(data):
 
 
 # ✅ Database setup
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/users.db'
 db.init_app(app)
 
 # ✅ Login manager setup
