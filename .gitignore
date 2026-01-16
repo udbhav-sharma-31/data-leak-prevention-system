@@ -8,12 +8,12 @@ venv/
 env/
 
 # --- Database files ---
-instance/
+
 *.db
 
 # --- Logs, outputs, and temporary files ---
 *.log
-*.txt
+
 *.csv
 
 # --- VS Code settings ---

@@ -1,0 +1,7 @@
+username = admin
+password = mySecret123
+email = testuser123@gmail.com
+AWS key: AKIA1234567890ABCDEFG
+-----BEGIN PRIVATE KEY-----
+xyzabc123456
+-----END PRIVATE KEY-----
